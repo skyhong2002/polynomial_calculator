@@ -164,10 +164,12 @@ int main(){
                 cout << i.first << " (size: " << i.second.size() << "): ";
                 const std::pair<int, int> *tmp_term = i.second.term();
                 for(int j = 0; j < i.second.size() - 1; ++j){
-                    cout << abs(tmp_term[j].second) << "x^" << tmp_term[j].first << (tmp_term[j+1].second < 0?" - ":" + ");
+                    cout << abs(tmp_term[j].second) << "x^"
+                         << tmp_term[j].first << (tmp_term[j+1].second < 0?" - ":" + ");
                 }
                 if(tmp_term[i.second.size()-1].first!=0) 
-                    cout << abs(tmp_term[i.second.size()-1].second) << "x^" << tmp_term[i.second.size()-1].first << "\n";
+                    cout << abs(tmp_term[i.second.size()-1].second)
+                         << "x^" << tmp_term[i.second.size()-1].first << "\n";
                 else cout << abs(tmp_term[i.second.size()-1].second) << "\n";
             }
         }
