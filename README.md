@@ -1,3 +1,3 @@
-# Matrix Calculator
+# Polynomial Calculator
 
 Data Structure HW3
