@@ -25,7 +25,7 @@ Don't forget to press the return butten owo<br>
 
 ## Complexity analysis
 
-### Build/Edit a polynomial
+### Build/Edit a polynomial
 push: O(n)/O(1)<br>
 sort: O(n log n)/O(n)<br>
 total complexity: O(n log n)/O(n)
