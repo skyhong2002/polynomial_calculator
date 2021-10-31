@@ -10,7 +10,7 @@ public:
     polynomial();
     polynomial(const polynomial &in);
     //~polynomial();
-    const std::pair<int, int>* term() const {return term_; }
+    const std::pair<int, int>* term() const { return term_; }
     const size_t size() const { return size_; }
     const int term_find(int pow);
     polynomial &operator+=(const polynomial &rhs);
