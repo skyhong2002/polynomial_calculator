@@ -3,7 +3,7 @@ using namespace std;
 
 polynomial::polynomial():size_(0){};
 polynomial::polynomial(const polynomial &in){
-    for(size_t i = 0; i < size_; ++i)
+    for(size_t i = 0; i < in.size_; ++i)
         term_[i] = in.term_[i];
     size_ = in.size_;
 }
@@ -14,37 +14,30 @@ const int polynomial::term_find(int pow){
     int r = size_;
     int m = (l + r)/2;
     while(term_[m].first != pow){
-        m = (l + r)/2;
+        if(l >= r - 1) return -1;
         if(term_[m].first < pow) r = m;
         else                     l = m + 1;
-        if(l >= r - 1) return -1;
+        m = (l + r)/2;
     }
     return m;
 }
 polynomial& polynomial::operator+=(const polynomial &rhs){
-    unsigned i = 0;
-    unsigned j = 0;
-    while (i < size_ || j < rhs.size_){
-        if(term_[i].first == rhs.term_[j].first){ term_[i++].second += rhs.term_[j++].second;}
-        if(term_[i] < rhs.term_[j]){ ++i; }
-        if(term_[i] > rhs.term_[j]){ term_push(rhs.term_[j++]); }
+    for(int i = 0; i < rhs.size_; ++i){
+        term_push(rhs.term_[i]);
     }
-    while(j < rhs.size_){
-        term_push(rhs.term_[j++]);
-    }
-    sort(term_, term_ + size_, greater< pair<int, int> >());
     return *this;
 }
 polynomial& polynomial::operator*=(const polynomial &rhs){
     size_t lhs_size_ = size_;
     std::pair<int, int> lhs_term_[100];
-    for(int i = 0; i < 100; ++i)
+    for(int i = 0; i < lhs_size_; ++i)
         lhs_term_[i] = term_[i];
     clear();
+    size_ = 0;
     for(int i = 0; i < lhs_size_; ++i){
-        for(int j = 0; j < rhs.size_; ++i){
-            term_push(lhs_term_[i].first + rhs.term_[i].first,
-                      lhs_term_[i].second + rhs.term_[i].second);
+        for(int j = 0; j < rhs.size_; ++j){
+            term_push(lhs_term_[i].first + rhs.term_[j].first,
+                      lhs_term_[i].second * rhs.term_[j].second);
         }
     }
     return *this;
@@ -66,23 +59,20 @@ polynomial& polynomial::operator=(const polynomial &rhs){
 }
 void polynomial::term_push(std::pair<int, int> tmp){
     int pos = term_find(tmp.first);
-    if(pos == -1){
-        term_[size_].first = tmp.first;
-        term_[size_].second = tmp.second;
-        ++size_;
-        sort(term_, term_ + size_, greater< pair<int, int> >());
-    }
-    else{
+    if(pos != -1){
         if(term_[pos].second - tmp.second == 0){
-            term_[pos].first = term_[size_-1].first;
-            term_[pos].second = term_[size_-1].second;
+            term_[pos] = term_[size_-1];
             --size_;
-            sort(term_, term_ + size_, greater< pair<int, int> >());
         }
         else{
             term_[pos].second += tmp.second;
         }
-    }   
+    }
+    else {
+        term_[size_] = tmp;
+        ++size_;
+    }
+    sort(term_, term_ + size_, greater< pair<int, int> >());
     return;
 }
 void polynomial::term_push(int pow, int coef){
